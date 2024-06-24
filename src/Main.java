@@ -10,26 +10,35 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Iterator;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
         try {
-            imageCompressionMethod("./photo2.png",0.75f);
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("PLEASE INSERT THE PATH OF YOUR IMAGE : ");
+            String imagePath = scanner.nextLine();
+            System.out.print("PLEASE INSERT QUALITY YOU WANT  : ");
+            float quality = scanner.nextFloat();
+            imageCompressionMethod(imagePath,quality);
         } catch (Exception e) {
             System.out.println(e);
         }
+
     }
 
     public static void imageCompressionMethod(String imagePath, float quality) {
         try {
+            Random random = new Random();
             BufferedImage image = ImageIO.read(new File(imagePath));
             String formatName = imagePath.substring(imagePath.lastIndexOf(".") + 1).toLowerCase();
 
             Iterator<ImageWriter> imageWriterIterator = ImageIO.getImageWritersByFormatName(formatName);
             ImageWriter imageWriter = imageWriterIterator.next();
-            ImageOutputStream outputStream = ImageIO.createImageOutputStream(new File("./compressedImage." + formatName));
+            ImageOutputStream outputStream = ImageIO.createImageOutputStream(new File("./compressedImage"+random.nextInt()+"." + formatName));
             imageWriter.setOutput(outputStream);
             ImageWriteParam QualityParameters = imageWriter.getDefaultWriteParam();
 
